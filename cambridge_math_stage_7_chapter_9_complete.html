@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cambridge Mathematics Stage 7: Sequences and Functions</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- MathJax Configuration and Script for LaTeX rendering -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            startup: {
+                pageReady: () => {
+                    return MathJax.startup.defaultPageReady().then(() => {
+                        console.log('MathJax initial rendering complete');
+                    });
+                }
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script id="mathjax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+    <!-- Font Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .solution-box { display: none; }
+        .fill-blank-input {
+            border-bottom: 2px solid #6366f1;
+            background-color: #f8fafc;
+            text-align: center;
+            font-weight: 600;
+            color: #1e1b4b;
+            transition: all 0.2s;
+        }
+        .fill-blank-input:focus {
+            outline: none;
+            border-bottom-color: #4338ca;
+            background-color: #eef2ff;
+        }
+        .save-toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 100;
+            transition: opacity 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen pb-16">
+
+    <!-- Toast Saved Indicator -->
+    <div id="saveToast" class="save-toast hidden bg-slate-900 text-white text-xs px-4 py-2.5 rounded-xl shadow-xl flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span>Jawaban tersimpan otomatis</span>
+    </div>
+
+    <!-- Header Navigation Bar -->
+    <header class="bg-indigo-700 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center">
+            <div>
+                <span class="text-[10px] font-semibold bg-indigo-500 px-2 py-0.5 rounded text-white tracking-wide uppercase">Cambridge Math Stage 7</span>
+                <h1 class="text-xl font-bold tracking-tight">Chapter 9: Sequences and Functions</h1>
+            </div>
+            <nav class="flex gap-2 text-xs mt-2 sm:mt-0 overflow-x-auto pb-1 sm:pb-0">
+                <a href="#objectives" class="bg-indigo-600 hover:bg-indigo-800 px-3 py-1.5 rounded transition">Tujuan & Warm-up</a>
+                <a href="#fibonacci" class="bg-indigo-600 hover:bg-indigo-800 px-3 py-1.5 rounded transition">Fibonacci</a>
+                <a href="#section-9-1" class="bg-indigo-600 hover:bg-indigo-800 px-3 py-1.5 rounded transition">9.1 Sequences 1</a>
+                <a href="#section-9-2" class="bg-indigo-600 hover:bg-indigo-800 px-3 py-1.5 rounded transition">9.2 Patterns</a>
+                <a href="#section-9-3" class="bg-indigo-600 hover:bg-indigo-800 px-3 py-1.5 rounded transition">9.3 $n^{\text{th}}$ Term</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 py-8 space-y-12">
+
+        <!-- 1. TUJUAN PEMBELAJARAN (LEARNING OBJECTIVES) -->
+        <section id="objectives" class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200">
+            <div class="flex items-center gap-3 mb-4">
+                <div class="bg-indigo-100 p-3 rounded-xl text-indigo-600">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                </div>
+                <h2 class="text-2xl font-bold text-slate-900">Tujuan Pembelajaran (Learning Objectives)</h2>
+            </div>
+            <p class="text-slate-600 mb-4">Dalam bab 9 ini (Sequences and Functions), kamu akan mempelajari:</p>
+            <ul class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <li class="bg-slate-50 border border-slate-200 p-4 rounded-xl flex items-start gap-3">
+                    <span class="bg-indigo-600 text-white w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 text-sm font-semibold">1</span>
+                    <span>Menentukan dan menggunakan aturan suku-ke-suku (<strong>term-to-term rule</strong>) untuk barisan bilangan.</span>
+                </li>
+                <li class="bg-slate-50 border border-slate-200 p-4 rounded-xl flex items-start gap-3">
+                    <span class="bg-indigo-600 text-white w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 text-sm font-semibold">2</span>
+                    <span>Menemukan dan menggunakan aturan suku-ke-suku pada barisan berbentuk <strong>pola gambar/objek</strong>.</span>
+                </li>
+                <li class="bg-slate-50 border border-slate-200 p-4 rounded-xl flex items-start gap-3">
+                    <span class="bg-indigo-600 text-white w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 text-sm font-semibold">3</span>
+                    <span>Menggunakan aljabar untuk menentukan dan menerapkan aturan suku ke-$n$ (<strong>$n^{\text{th}}$ term rule</strong>).</span>
+                </li>
+            </ul>
+        </section>
+
+        <!-- 2. WARM-UP / GETTING STARTED -->
+        <section class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200">
+            <div class="flex justify-between items-center mb-6 border-b pb-4">
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-900">Getting Started (Apersepsi & Soal Halaman 1)</h2>
+                    <p class="text-xs text-slate-500">Lakukan pemanasan berhitung sebelum memasuki materi barisan bilangan.</p>
+                </div>
+                <span class="bg-amber-100 text-amber-800 text-xs px-3 py-1 rounded-full font-medium">PDF Halaman 1</span>
+            </div>
+
+            <div class="space-y-8">
+                <!-- Soal 1 -->
+                <div class="border border-slate-200 rounded-xl p-5">
+                    <h3 class="font-semibold text-lg text-indigo-700 mb-3">1. Work out (Hitunglah):</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm font-mono">
+                        <div class="bg-slate-50 p-3 rounded-lg flex flex-col gap-2">
+                            <span>a) $8 + 6 =$</span>
+                            <input type="text" data-id="gs1_a" placeholder="Isi..." class="fill-blank-input w-full py-1 text-sm rounded">
+                        </div>
+                        <div class="bg-slate-50 p-3 rounded-lg flex flex-col gap-2">
+                            <span>b) $17 - 5 =$</span>
+                            <input type="text" data-id="gs1_b" placeholder="Isi..." class="fill-blank-input w-full py-1 text-sm rounded">
+                        </div>
+                        <div class="bg-slate-50 p-3 rounded-lg flex flex-col gap-2">
+                            <span>c) $-2 + 6 =$</span>
+                            <input type="text" data-id="gs1_c" placeholder="Isi..." class="fill-blank-input w-full py-1 text-sm rounded">
+                        </div>
+                        <div class="bg-slate-50 p-3 rounded-lg flex flex-col gap-2">
+                            <span>d) $9 - 12 =$</span>
+                            <input type="text" data-id="gs1_d" placeholder="Isi..." class="fill-blank-input w-full py-1 text-sm rounded">
+                        </div>
+                        <div class="bg-slate-50 p-3 rounded-lg flex flex-col gap-2">
+                            <span>e) $5 \times 7 =$</span>
+                            <input type="text" data-id="gs1_e" placeholder="Isi..." class="fill-blank-input w-full py-1 text-sm rounded">
+                        </div>
+                        <div class="bg-slate-50 p-3 rounded-lg flex flex-col gap-2">
+                            <span>f) $24 \div 6 =$</span>
+                            <input type="text" data-id="gs1_f" placeholder="Isi..." class="fill-blank-input w-full py-1 text-sm rounded">
+                        </div>
+                        <div class="bg-slate-50 p-3 rounded-lg flex flex-col gap-2">
+                            <span>g) $-3 \times 6 =$</span>
+                            <input type="text" data-id="gs1_g" placeholder="Isi..." class="fill-blank-input w-full py-1 text-sm rounded">
+                        </div>
+                        <div class="bg-slate-50 p-3 rounded-lg flex flex-col gap-2">
+                            <span>h) $35 \div -7 =$</span>
+                            <input type="text" data-id="gs1_h" placeholder="Isi..." class="fill-blank-input w-full py-1 text-sm rounded">
+                        </div>
+                    </div>
+                    <button onclick="toggleSolution('getting-started-1')" class="mt-4 text-xs font-semibold bg-indigo-50 hover:bg-indigo-100 text-indigo-700 px-3 py-2 rounded-lg transition border border-indigo-200">
+                        🔍 Tampilkan Kunci Jawaban
+                    </button>
+                    <div id="getting-started-1" class="solution-box mt-3 p-4 bg-emerald-50 text-emerald-900 rounded-lg text-sm grid grid-cols-2 md:grid-cols-4 gap-2 border border-emerald-200">
+                        <div>a) <strong>14</strong></div>
+                        <div>b) <strong>12</strong></div>
+                        <div>c) <strong>4</strong></div>
+                        <div>d) <strong>-3</strong></div>
+                        <div>e) <strong>35</strong></div>
+                        <div>f) <strong>4</strong></div>
+                        <div>g) <strong>-18</strong></div>
+                        <div>h) <strong>-5</strong></div>
+                    </div>
+                </div>
+
+                <!-- Soal 2 -->
+                <div class="border border-slate-200 rounded-xl p-5">
+                    <h3 class="font-semibold text-lg text-indigo-700 mb-2">2. Copy and complete these calculations.</h3>
+                    <p class="text-sm text-slate-600 mb-4">All missing numbers are in the rectangle: <span class="font-bold border px-2 py-0.5 rounded bg-amber-50 text-amber-900">[9, -5, 14, 7, 5, 10, 4, 6, 8, 3]</span></p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                        <div class="bg-slate-50 p-3.5 rounded-lg border border-slate-200 flex items-center justify-between">
+                            <span class="font-medium">a) $4 + \text{___} = 11$</span>
+                            <input type="text" data-id="gs2_a" placeholder="?" class="fill-blank-input w-16 py-1 text-center rounded">
+                        </div>
+                        <div class="bg-slate-50 p-3.5 rounded-lg border border-slate-200 flex items-center justify-between">
+                            <span class="font-medium">b) $23 - \text{___} = 18$</span>
+                            <input type="text" data-id="gs2_b" placeholder="?" class="fill-blank-input w-16 py-1 text-center rounded">
+                        </div>
+                        <div class="bg-slate-50 p-3.5 rounded-lg border border-slate-200 flex items-center justify-between">
+                            <span class="font-medium">c) $\text{___} + 3 = 12$</span>
+                            <input type="text" data-id="gs2_c" placeholder="?" class="fill-blank-input w-16 py-1 text-center rounded">
+                        </div>
+                        <div class="bg-slate-50 p-3.5 rounded-lg border border-slate-200 flex items-center justify-between">
+                            <span class="font-medium">d) $-3 + \text{___} = 3$</span>
+                            <input type="text" data-id="gs2_d" placeholder="?" class="fill-blank-input w-16 py-1 text-center rounded">
+                        </div>
+                        <div class="bg-slate-50 p-3.5 rounded-lg border border-slate-200 flex items-center justify-between">
+                            <span class="font-medium">e) $\text{___} - 8 = -5$</span>
+                            <input type="text" data-id="gs2_e" placeholder="?" class="fill-blank-input w-16 py-1 text-center rounded">
+                        </div>
+                        <div class="bg-slate-50 p-3.5 rounded-lg border border-slate-200 flex items-center justify-between">
+                            <span class="font-medium">f) $10 - \text{___} = -4$</span>
+                            <input type="text" data-id="gs2_f" placeholder="?" class="fill-blank-input w-16 py-1 text-center rounded">
+                        </div>
+                        <div class="bg-slate-50 p-3.5 rounded-lg border border-slate-200 flex items-center justify-between">
+                            <span class="font-medium">g) $3 \times \text{___} = 12$</span>
+                            <input type="text" data-id="gs2_g" placeholder="?" class="fill-blank-input w-16 py-1 text-center rounded">
+                        </div>
+                        <div class="bg-slate-50 p-3.5 rounded-lg border border-slate-200 flex items-center justify-between">
+                            <span class="font-medium">h) $\text{___} \times 12 = 96$</span>
+                            <input type="text" data-id="gs2_h" placeholder="?" class="fill-blank-input w-16 py-1 text-center rounded">
+                        </div>
+                        <div class="bg-slate-50 p-3.5 rounded-lg border border-slate-200 flex items-center justify-between">
+                            <span class="font-medium">i) $\text{___} \div -2 = \text{___}$</span>
+                            <div class="flex items-center gap-1">
+                                <input type="text" data-id="gs2_i1" placeholder="?" class="fill-blank-input w-10 py-1 text-center text-xs rounded">
+                                <span class="text-xs">,</span>
+                                <input type="text" data-id="gs2_i2" placeholder="?" class="fill-blank-input w-10 py-1 text-center text-xs rounded">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button onclick="toggleSolution('getting-started-2')" class="mt-4 text-xs font-semibold bg-indigo-50 hover:bg-indigo-100 text-indigo-700 px-3 py-2 rounded-lg transition border border-indigo-200">
+                        🔍 Tampilkan Kunci Jawaban
+                    </button>
+                    <div id="getting-started-2" class="solution-box mt-3 p-4 bg-emerald-50 text-emerald-900 rounded-lg text-sm grid grid-cols-1 md:grid-cols-3 gap-2 border border-emerald-200">
+                        <div>a) 4 + <strong>7</strong> = 11</div>
+                        <div>b) 23 - <strong>5</strong> = 18</div>
+                        <div>c) <strong>9</strong> + 3 = 12</div>
+                        <div>d) -3 + <strong>6</strong> = 3</div>
+                        <div>e) <strong>3</strong> - 8 = -5</div>
+                        <div>f) 10 - <strong>14</strong> = -4</div>
+                        <div>g) 3 × <strong>4</strong> = 12</div>
+                        <div>h) <strong>8</strong> × 12 = 96</div>
+                        <div>i) <strong>-10</strong> ÷ -2 = <strong>5</strong></div>
+                    </div>
+                </div>
+
+                <!-- Soal 3 & 4 -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="border border-slate-200 rounded-xl p-5">
+                        <h3 class="font-semibold text-lg text-indigo-700 mb-3">3. Order of Operations (BIDMAS/BODMAS)</h3>
+                        <div class="space-y-3 text-sm">
+                            <div class="flex items-center justify-between bg-slate-50 p-2 rounded border"><span>a) $5 + 4 \times 3 =$</span><input type="text" data-id="gs3_a" placeholder="Isi..." class="fill-blank-input w-20 py-1 text-xs rounded"></div>
+                            <div class="flex items-center justify-between bg-slate-50 p-2 rounded border"><span>b) $(5 + 4) \times 3 =$</span><input type="text" data-id="gs3_b" placeholder="Isi..." class="fill-blank-input w-20 py-1 text-xs rounded"></div>
+                            <div class="flex items-center justify-between bg-slate-50 p-2 rounded border"><span>c) $6 + 4 \div 2 =$</span><input type="text" data-id="gs3_c" placeholder="Isi..." class="fill-blank-input w-20 py-1 text-xs rounded"></div>
+                            <div class="flex items-center justify-between bg-slate-50 p-2 rounded border"><span>d) $(6 + 4) \div 2 =$</span><input type="text" data-id="gs3_d" placeholder="Isi..." class="fill-blank-input w-20 py-1 text-xs rounded"></div>
+                            <div class="flex items-center justify-between bg-slate-50 p-2 rounded border"><span>e) $\frac{12}{3} + 9 =$</span><input type="text" data-id="gs3_e" placeholder="Isi..." class="fill-blank-input w-20 py-1 text-xs rounded"></div>
+                            <div class="flex items-center justify-between bg-slate-50 p-2 rounded border"><span>f) $\frac{12 + 9}{3} =$</span><input type="text" data-id="gs3_f" placeholder="Isi..." class="fill-blank-input w-20 py-1 text-xs rounded"></div>
+                            <div class="flex items-center justify-between bg-slate-50 p-2 rounded border"><span>g) $-2 \times 3 + 10 =$</span><input type="text" data-id="gs3_g" placeholder="Isi..." class="fill-blank-input w-20 py-1 text-xs rounded"></div>
+                            <div class="flex items-center justify-between bg-slate-50 p-2 rounded border"><span>h) $-5 - \frac{10}{5} =$</span><input type="text" data-id="gs3_h" placeholder="Isi..." class="fill-blank-input w-20 py-1 text-xs rounded"></div>
+                        </div>
+                        <button onclick="toggleSolution('getting-started-3')" class="mt-4 text-xs font-semibold text-indigo-600 hover:text-indigo-800">
+                            🔍 Tampilkan Jawaban
+                        </button>
+                        <div id="getting-started-3" class="solution-box mt-3 p-3 bg-emerald-50 text-emerald-900 rounded-lg text-xs space-y-1 border border-emerald-200">
+                            <p>a) $5 + 12 = \mathbf{17}$</p>
+                            <p>b) $9 \times 3 = \mathbf{27}$</p>
+                            <p>c) $6 + 2 = \mathbf{8}$</p>
+                            <p>d) $10 \div 2 = \mathbf{5}$</p>
+                            <p>e) $4 + 9 = \mathbf{13}$</p>
+                            <p>f) $21 \div 3 = \mathbf{7}$</p>
+                            <p>g) $-6 + 10 = \mathbf{4}$</p>
+                            <p>h) $-5 - 2 = \mathbf{-7}$</p>
+                        </div>
+                    </div>
+
+                    <div class="border border-slate-200 rounded-xl p-5">
+                        <h3 class="font-semibold text-lg text-indigo-700 mb-3">4. Evaluasi Nilai Ekspresi Aljabar</h3>
+                        <div class="space-y-3 text-sm">
+                            <div class="flex items-center justify-between bg-slate-50 p-2 rounded border"><span>a) $n + 4$ saat $n = 6$</span><input type="text" data-id="gs4_a" placeholder="Isi..." class="fill-blank-input w-20 py-1 text-xs rounded"></div>
+                            <div class="flex items-center justify-between bg-slate-50 p-2 rounded border"><span>b) $n - 10$ saat $n = 8$</span><input type="text" data-id="gs4_b" placeholder="Isi..." class="fill-blank-input w-20 py-1 text-xs rounded"></div>
+                            <div class="flex items-center justify-between bg-slate-50 p-2 rounded border"><span>c) $n - 9$ saat $n = 20$</span><input type="text" data-id="gs4_c" placeholder="Isi..." class="fill-blank-input w-20 py-1 text-xs rounded"></div>
+                            <div class="flex items-center justify-between bg-slate-50 p-2 rounded border"><span>d) $6n$ saat $n = 3$</span><input type="text" data-id="gs4_d" placeholder="Isi..." class="fill-blank-input w-20 py-1 text-xs rounded"></div>
+                        </div>
+                        <button onclick="toggleSolution('getting-started-4')" class="mt-4 text-xs font-semibold text-indigo-600 hover:text-indigo-800">
+                            🔍 Tampilkan Jawaban
+                        </button>
+                        <div id="getting-started-4" class="solution-box mt-3 p-3 bg-emerald-50 text-emerald-900 rounded-lg text-xs space-y-1 border border-emerald-200">
+                            <p>a) $6 + 4 = \mathbf{10}$</p>
+                            <p>b) $8 - 10 = \mathbf{-2}$</p>
+                            <p>c) $20 - 9 = \mathbf{11}$</p>
+                            <p>d) $6 \times 3 = \mathbf{18}$</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. SEJARAH FIBONACCI DAN PENERAPAN NYATA -->
+        <section id="fibonacci" class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-6 md:p-8 shadow-sm border border-amber-200">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="bg-amber-500 text-white p-3 rounded-xl">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                </div>
+                <div>
+                    <h2 class="text-2xl font-bold text-amber-950">Sejarah Matematika: Barisan Fibonacci (Fibonacci Sequence)</h2>
+                    <p class="text-xs text-amber-700">PDF Halaman 2 • Penerapan Barisan Matematika di Alam</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="md:col-span-2 space-y-4 text-slate-700">
+                    <p>
+                        <strong>Leonardo Pisano</strong> (lahir sekitar 1170 di Pisa, Italia), yang kemudian dikenal dengan nama <strong>Fibonacci</strong>, menulis beberapa buku matematika terkenal. Pada salah satu bukunya di tahun 1202, ia menuliskan pola bilangan unik yang ditemukan di alam.
+                    </p>
+                    <div class="bg-white p-4 rounded-xl border border-amber-200 shadow-sm">
+                        <h4 class="font-bold text-amber-900 mb-2">Pola Barisan Fibonacci:</h4>
+                        <div class="text-center font-mono text-xl text-amber-700 font-bold tracking-widest my-2">
+                            1, 1, 2, 3, 5, 8, 13, 21, 34, 55, ...
+                        </div>
+                        <p class="text-sm text-slate-600 mt-2">
+                            <strong>Aturan Pembentukan:</strong> Setiap suku didapatkan dengan menjumlahkan dua suku sebelumnya!
+                        </p>
+                        <ul class="text-xs text-slate-500 mt-2 space-y-1 font-mono">
+                            <li>$1 + 1 = 2$</li>
+                            <li>$1 + 2 = 3$</li>
+                            <li>$2 + 3 = 5$</li>
+                            <li>$3 + 5 = 8$</li>
+                            <li>$5 + 8 = 13$ ... dan seterusnya.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="bg-white p-5 rounded-xl border border-amber-200 shadow-sm space-y-4">
+                    <h3 class="font-bold text-slate-900 border-b pb-2">Penerapan Fibonacci di Alam:</h3>
+                    
+                    <div class="flex items-start gap-3">
+                        <div class="text-2xl">🌻</div>
+                        <div>
+                            <h4 class="font-semibold text-sm">Bunga Matahari (Sunflower)</h4>
+                            <p class="text-xs text-slate-600">Bunga matahari dapat memiliki 34 spiral searah jarum jam dan 21 spiral berlawanan arah jarum jam (angka Fibonacci berturut-turut).</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-3">
+                        <div class="text-2xl">🌲</div>
+                        <div>
+                            <h4 class="font-semibold text-sm">Pine Cone (Buah Pinus)</h4>
+                            <p class="text-xs text-slate-600">Buah pinus dapat memiliki 8 spiral searah jarum jam dan 13 spiral berlawanan arah jarum jam.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-3">
+                        <div class="text-2xl">🌸</div>
+                        <div>
+                            <h4 class="font-semibold text-sm">Kelopak Bunga</h4>
+                            <p class="text-xs text-slate-600">Banyak jenis bunga memiliki kelopak dalam deret Fibonacci (misal 3, 5, 8, atau 13 kelopak).</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. SUB-BAB 9.1: GENERATING SEQUENCES (1) -->
+        <section id="section-9-1" class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200 space-y-8">
+            <div class="border-b pb-4">
+                <span class="bg-indigo-100 text-indigo-700 text-xs font-bold px-3 py-1 rounded-full uppercase">Sub-Bab 9.1</span>
+                <h2 class="text-3xl font-bold text-slate-900 mt-2">Generating Sequences (1) - Aturan Suku-ke-Suku</h2>
+                <p class="text-slate-600 mt-1">PDF Halaman 3-7 • Konsep Teori Lengkap & Seluruh Soal Exercise 9.1</p>
+            </div>
+
+            <!-- MATERI TEORI 9.1 -->
+            <div class="bg-slate-50 border border-slate-200 rounded-xl p-5 space-y-3">
+                <h3 class="font-bold text-lg text-indigo-700">Penjelasan Materi & Kata Kunci:</h3>
+                <p class="text-sm">Misalkan ada barisan: <span class="font-mono font-bold text-indigo-600">3, 6, 9, 12, 15, ...</span></p>
+                <ul class="list-disc list-inside text-xs space-y-1 text-slate-700">
+                    <li><strong>Term (Suku):</strong> Tiap angka pada barisan. Suku pertama = 3, suku kedua = 6, dst.</li>
+                    <li><strong>Consecutive terms (Suku-suku berurutan):</strong> Suku yang berdampingan (contoh: 3 dan 6, atau 6 dan 9).</li>
+                    <li><strong>Term-to-term rule (Aturan suku-ke-suku):</strong> Aturan perpindahan dari satu suku ke suku berikutnya. Pada contoh di atas adalah <em>'Add 3' (Tambah 3)</em>.</li>
+                    <li><strong>Ellipses (...) & Infinite Sequence:</strong> Tiga titik di akhir menunjukkan barisan berlanjut tanpa batas (Tak Hingga).</li>
+                    <li><strong>Finite Sequence:</strong> Barisan yang berhenti (memiliki suku akhir / tidak ada titik-titik di ujungnya).</li>
+                </ul>
+
+                <div class="bg-white p-4 rounded-lg border border-slate-200 mt-2">
+                    <h4 class="font-bold text-xs text-indigo-800 uppercase tracking-wide">Worked Example 9.1 (Contoh Soal Pembahasan)</h4>
+                    <div class="text-xs space-y-2 mt-2">
+                        <p><strong>a) Barisan: 2, 6, 10, 14, ...</strong> $\rightarrow$ Aturan: <em>Add 4</em>. Dua suku berikutnya: $14+4=\mathbf{18}$, $18+4=\mathbf{22}$.</p>
+                        <p><strong>b) Suku pertama = 5. Aturan: <em>Multiply by 2 then add 1</em>.</strong> $\rightarrow$ Suku ke-2 = $5 \times 2 + 1 = \mathbf{11}$. Suku ke-3 = $11 \times 2 + 1 = \mathbf{23}$.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EXERCISE 9.1 -->
+            <div class="space-y-6">
+                <h3 class="font-bold text-xl text-slate-900 border-b pb-2">Exercise 9.1 (Seluruh Soal Halaman 4-7)</h3>
+
+                <!-- Q1 -->
+                <div class="border rounded-xl p-4 space-y-3">
+                    <span class="text-xs bg-indigo-100 text-indigo-700 font-bold px-2 py-0.5 rounded">Soal 1</span>
+                    <div class="space-y-3 text-sm">
+                        <div class="bg-slate-50 p-3 rounded-lg border space-y-2">
+                            <p class="font-semibold">a) $7, 11, 15, 19, \dots$ ($7+4=11, 11+4=15, 15+4=19$)</p>
+                            <div class="flex items-center gap-2 text-xs">
+                                <span>Term-to-term rule: Add</span>
+                                <input type="text" data-id="ex91_1a_rule" placeholder="..." class="fill-blank-input w-16 py-0.5 rounded">
+                            </div>
+                            <div class="flex items-center gap-2 text-xs">
+                                <span>Next two terms:</span>
+                                <input type="text" data-id="ex91_1a_t1" placeholder="Suku 5" class="fill-blank-input w-20 py-0.5 rounded">
+                                <input type="text" data-id="ex91_1a_t2" placeholder="Suku 6" class="fill-blank-input w-20 py-0.5 rounded">
+                            </div>
+                        </div>
+                        <div class="bg-slate-50 p-3 rounded-lg border space-y-2">
+                            <p class="font-semibold">b) $40, 35, 30, 25, \dots$</p>
+                            <div class="flex items-center gap-2 text-xs">
+                                <span>Term-to-term rule: Subtract</span>
+                                <input type="text" data-id="ex91_1b_rule" placeholder="..." class="fill-blank-input w-16 py-0.5 rounded">
+                            </div>
+                            <div class="flex items-center gap-2 text-xs">
+                                <span>Next two terms:</span>
+                                <input type="text" data-id="ex91_1b_t1" placeholder="Suku 5" class="fill-blank-input w-20 py-0.5 rounded">
+                                <input type="text" data-id="ex91_1b_t2" placeholder="Suku 6" class="fill-blank-input w-20 py-0.5 rounded">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Q2 -->
+                <div class="border rounded-xl p-4 space-y-3">
+                    <span class="text-xs bg-indigo-100 text-indigo-700 font-bold px-2 py-0.5 rounded">Soal 2 (Infinite Sequences)</span>
+                    <p class="text-sm">For each infinite sequence, write down: (i) term-to-term rule, (ii) next two terms.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+                        <div class="bg-slate-50 p-3 rounded-lg border space-y-2">
+                            <span class="font-semibold">a) 2, 4, 6, 8, ...</span>
+                            <input type="text" data-id="ex91_2a" placeholder="Rule & Dua Suku..." class="fill-blank-input w-full py-1 text-xs rounded">
+                        </div>
+                        <div class="bg-slate-50 p-3 rounded-lg border space-y-2">
+                            <span class="font-semibold">b) 17, 14, 11, 8, ...</span>
+                            <input type="text" data-id="ex91_2b" placeholder="Rule & Dua Suku..." class="fill-blank-input w-full py-1 text-xs rounded">
+                        </div>
+                        <div class="bg-slate-50 p-3 rounded-lg border space-y-2">
+                            <span class="font-semibold">c) 5, 9, 13, 17, ...</span>
+                            <input type="text" data-id="ex91_2c" placeholder="Rule & Dua Suku..." class="fill-blank-input w-full py-1 text-xs rounded">
+                        </div>
+                        <div class="bg-slate-50 p-3 rounded-lg border space-y-2">
+                            <span class="font-semibold">d) 30, 28, 26, 24, ...</span>
+                            <input type="text" data-id="ex91_2d" placeholder="Rule & Dua Suku..." class="fill-blank-input w-full py-1 text-xs rounded">
+                        </div>
+                        <div class="bg-slate-50 p-3 rounded-lg border space-y-2">
+                            <span class="font-semibold">e) 1, 6, 11, 16, ...</span>
+                            <input type="text" data-id="ex91_2e" placeholder="Rule & Dua Suku..." class="fill-blank-input w-full py-1 text-xs rounded">
+                        </div>
+                        <div class="bg-slate-50 p-3 rounded-lg border space-y-2">
+                            <span class="font-semibold">f) 18, 15, 12, 9, ...</span>
+                            <input type="text" data-id="ex91_2f" placeholder="Rule & Dua Suku..." class="fill-blank-input w-full py-1 text-xs rounded">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Q3 -->
+                <div class="border rounded-xl p-4 space-y-3">
+                    <span class="text-xs bg-indigo-100 text-indigo-700 font-bold px-2 py-0.5 rounded">Soal 3 (First Term & Rule to Sequence)</span>
+                    <p class="text-sm">Write down the first four terms of each sequence:</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+                        <div class="bg-slate-50 p-3 rounded-lg border">
+                            <p class="font-semibold text-slate-800 mb-1">a) First term: 1 | Rule: Add 5</p>
+                            <input type="text" data-id="ex91_3a" placeholder="Suku 1, 2, 3, 4..." class="fill-blank-input w-full py-1 rounded">
+                        </div>
+                        <div class="bg-slate-50 p-3 rounded-lg border">
+                            <p class="font-semibold text-slate-800 mb-1">b) First term: 20 | Rule: Subtract 4</p>
+                            <input type="text" data-id="ex91_3b" placeholder="Suku 1, 2, 3, 4..." class="fill-blank-input w-full py-1 rounded">
+                        </div>
+                        <div class="bg-slate-50 p-3 rounded-lg border">
+                            <p class="font-semibold text-slate-800 mb-1">c) First term: 6 | Rule: Multiply by 2</p>
+                            <input type="text" data-id="ex91_3c" placeholder="Suku 1, 2, 3, 4..." class="fill-blank-input w-full py-1 rounded">
+                        </div>
+                        <div class="bg-slate-50 p-3 rounded-lg border">
+                            <p class="font-semibold text-slate-800 mb-1">d) First term: 60 | Rule: Divide by 2</p>
+                            <input type="text" data-id="ex91_3d" placeholder="Suku 1, 2, 3, 4..." class="fill-blank-input w-full py-1 rounded">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Q4 -->
+                <div class="border rounded-xl p-4 space-y-3">
+                    <span class="text-xs bg-indigo-100 text-indigo-700 font-bold px-2 py-0.5 rounded">Soal 4 (Finite Sequences - Missing Terms)</span>
+                    <p class="text-sm">Copy these finite sequences and fill in the missing terms (☐):</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+                        <div class="bg-slate-50 p-3 rounded-lg border">
+                            <p class="font-semibold mb-1">a) $2, 5, \Box, 11, \Box, 17, 20$</p>
+                            <input type="text" data-id="ex91_4a" placeholder="Suku yang hilang..." class="fill-blank-input w-full py-1 rounded">
+                        </div>
+                        <div class="bg-slate-50 p-3 rounded-lg border">
+                            <p class="font-semibold mb-1">b) $5, 11, 17, \Box, 29, 35$</p>
+                            <input type="text" data-id="ex91_4b" placeholder="Suku yang hilang..." class="fill-blank-input w-full py-1 rounded">
+                        </div>
+                        <div class="bg-slate-50 p-3 rounded-lg border">
+                            <p class="font-semibold mb-1">c) $26, 23, \Box, \Box, 14, 11, 8$</p>
+                            <input type="text" data-id="ex91_4c" placeholder="Suku yang hilang..." class="fill-blank-input w-full py-1 rounded">
+                        </div>
+                        <div class="bg-slate-50 p-3 rounded-lg border">
+                            <p class="font-semibold mb-1">d) $90, 82, \Box, 66, 58, 50, \Box$</p>
+                            <input type="text" data-id="ex91_4d" placeholder="Suku yang hilang..." class="fill-blank-input w-full py-1 rounded">
+                        </div>
+                        <div class="bg-slate-50 p-3 rounded-lg border">
+                            <p class="font-semibold mb-1">e) $8, \Box, 24, 32, 40, \Box$</p>
+                            <input type="text" data-id="ex91_4e" placeholder="Suku yang hilang..." class="fill-blank-input w-full py-1 rounded">
+                        </div>
+                        <div class="bg-slate-50 p-3 rounded-lg border">
+                            <p class="font-semibold mb-1">f) $28, 23, \Box, 13, \Box, 3$</p>
+                            <input type="text" data-id="ex91_4f" placeholder="Suku yang hilang..." class="fill-blank-input w-full py-1 rounded">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Q5 -->
+                <div class="border rounded-xl p-4 space-y-3">
+                    <span class="text-xs bg-indigo-100 text-indigo-700 font-bold px-2 py-0.5 rounded">Soal 5 (Finite or Infinite?)</span>
+                    <p class="text-sm">Write down whether each sequence is <strong>finite</strong> or <strong>infinite</strong>:</p>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+                        <div class="bg-slate-50 p-2 rounded border"><span>a) $4, 6, 8, 10, \dots$</span><input type="text" data-id="ex91_5a" placeholder="finite/infinite" class="fill-blank-input w-full mt-1 py-0.5 rounded text-center"></div>
+                        <div class="bg-slate-50 p-2 rounded border"><span>b) $3, 5, 7, 9, 11, 13, 15$</span><input type="text" data-id="ex91_5b" placeholder="finite/infinite" class="fill-blank-input w-full mt-1 py-0.5 rounded text-center"></div>
+                        <div class="bg-slate-50 p-2 rounded border"><span>c) $85, 75, 65, 55, 45, 35$</span><input type="text" data-id="ex91_5c" placeholder="finite/infinite" class="fill-blank-input w-full mt-1 py-0.5 rounded text-center"></div>
+                        <div class="bg-slate-50 p-2 rounded border"><span>d) $100, 97, 94, 91, 88, \dots$</span><input type="text" data-id="ex91_5d" placeholder="finite/infinite" class="fill-blank-input w-full mt-1 py-0.5 rounded text-center"></div>
+                    </div>
+                </div>
+
+                <!-- Q6 -->
+                <div class="border rounded-xl p-4 space-y-3">
+                    <span class="text-xs bg-indigo-100 text-indigo-700 font-bold px-2 py-0.5 rounded">Soal 6 (Two-step Rules)</span>
+                    <p class="text-sm">Write down the first three terms of each sequence:</p>
+                    <div class="space-y-3 text-xs">
+                        <div class="bg-slate-50 p-3 rounded border">
+                            <p class="font-semibold">a) First term: 4 | Rule: Multiply by 2 then add 1</p>
+                            <p class="text-slate-500">Term 1 = 4 | Term 2 = $4 \times 2 + 1 = 9$ | Term 3 = <input type="text" data-id="ex91_6a" placeholder="Hitung..." class="fill-blank-input w-24 py-0.5 rounded text-center"></p>
+                        </div>
+                        <div class="bg-slate-50 p-3 rounded border">
+                            <p class="font-semibold">b) First term: 10 | Rule: Multiply by 3 then subtract 6</p>
+                            <input type="text" data-id="ex91_6b" placeholder="Tulis 3 suku pertama..." class="fill-blank-input w-full mt-1 py-1 rounded">
+                        </div>
+                        <div class="bg-slate-50 p-3 rounded border">
+                            <p class="font-semibold">c) First term: 24 | Rule: Divide by 2 then add 4</p>
+                            <input type="text" data-id="ex91_6c" placeholder="Tulis 3 suku pertama..." class="fill-blank-input w-full mt-1 py-1 rounded">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Q7 -->
+                <div class="border rounded-xl p-4 space-y-3">
+                    <span class="text-xs bg-indigo-100 text-indigo-700 font-bold px-2 py-0.5 rounded">Soal 7 (Matching Activity)</span>
+                    <p class="text-sm">Match each First Term & Sequence to its Term-to-term rule (i to vi):</p>
+                    <div class="text-xs space-y-2">
+                        <div class="p-2 bg-slate-50 rounded border flex items-center justify-between">
+                            <span>A) First term 3 $\rightarrow$ Sequence c: 3, 6, 12, 24, ...</span>
+                            <span class="font-bold text-indigo-600">Rule iv (Multiply by 2)</span>
+                        </div>
+                        <div class="p-2 bg-slate-50 rounded border flex items-center justify-between">
+                            <span>B) First term 11 $\rightarrow$ Sequence a: 11, 14, 17, 20, ...</span>
+                            <input type="text" data-id="ex91_7b" placeholder="Rule (i - vi)?" class="fill-blank-input w-32 py-0.5 rounded text-center">
+                        </div>
+                        <div class="p-2 bg-slate-50 rounded border flex items-center justify-between">
+                            <span>C) First term 17 $\rightarrow$ Sequence b: 17, 15, 13, 11, ...</span>
+                            <input type="text" data-id="ex91_7c" placeholder="Rule (i - vi)?" class="fill-blank-input w-32 py-0.5 rounded text-center">
+                        </div>
+                        <div class="p-2 bg-slate-50 rounded border flex items-center justify-between">
+                            <span>D) First term 80 $\rightarrow$ Sequence d: 80, 40, 20, 10, ...</span>
+                            <input type="text" data-id="ex91_7d" placeholder="Rule (i - vi)?" class="fill-blank-input w-32 py-0.5 rounded text-center">
+                        </div>
+                        <div class="p-2 bg-slate-50 rounded border flex items-center justify-between">
+                            <span>E) First term 1 $\rightarrow$ Sequence e: 1, 6, 31, 156, ...</span>
+                            <input type="text" data-id="ex91_7e" placeholder="Rule (i - vi)?" class="fill-blank-input w-32 py-0.5 rounded text-center">
+                        </div>
+                        <div class="p-2 bg-slate-50 rounded border flex items-center justify-between">
+                            <span>F) First term 64 $\rightarrow$ Sequence f: 64, 36, 22, 15, ...</span>
+                            <input type="text" data-id="ex91_7f" placeholder="Rule (i - vi)?" class="fill-blank-input w-32 py-0.5 rounded text-center">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Q8 - Q11 -->
+                <div class="border rounded-xl p-4 space-y-4">
+                    <span class="text-xs bg-indigo-100 text-indigo-700 font-bold px-2 py-0.5 rounded">Soal 8 - 11 (Reasoning & Problem Solving)</span>
+                    
+                    <div class="space-y-3 text-xs">
+                        <div class="bg-slate-50 p-3 rounded border">
+                            <p class="font-semibold text-slate-800">8) Sofia & Zara melihat barisan: 4, 8, 20, 56, 164, ...</p>
+                            <p class="text-slate-600">Sofia berkata aturan: 'Add 4'. Zara berkata aturan: 'Multiply by 2'. Keduanya salah. Jelaskan mengapa dan apa yang harus dilakukan!</p>
+                            <textarea data-id="ex91_8" placeholder="Tulis penjelasanmu..." class="fill-blank-input w-full p-2 mt-2 h-16 rounded text-left"></textarea>
+                        </div>
+
+                        <div class="bg-slate-50 p-3 rounded border">
+                            <p class="font-semibold text-slate-800">9) a) Berapa banyak suku yang harus diketahui untuk menentukan aturan barisan?</p>
+                            <input type="text" data-id="ex91_9a" placeholder="Jawaban..." class="fill-blank-input w-full mt-1 py-1 rounded">
+                            <p class="font-semibold text-slate-800 mt-2">b) Tulis aturan term-to-term untuk 2, 6, ... dan 3, 10, ...</p>
+                            <input type="text" data-id="ex91_9b" placeholder="Aturan 2,6 dan 3,10..." class="fill-blank-input w-full mt-1 py-1 rounded">
+                        </div>
+
+                        <div class="bg-slate-50 p-3 rounded border">
+                            <p class="font-semibold text-slate-800">10) Tuliskan 3 kemungkinan aturan term-to-term untuk barisan 3, 7, ... dan hitung 2 suku berikutnya!</p>
+                            <div class="space-y-1 mt-2">
+                                <p>• Rule 1: Add 4 $\rightarrow$ 11, 15</p>
+                                <p>• Rule 2: Multiply by 2 then add 1 $\rightarrow$ 15, 31</p>
+                                <p>• Rule 3: Multiply by 3 then subtract 2 $\rightarrow$ <input type="text" data-id="ex91_10_r3" placeholder="Suku 3 & 4..." class="fill-blank-input w-48 py-0.5 rounded text-center"></p>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-50 p-3 rounded border">
+                            <p class="font-semibold text-slate-800">11) Ryker: Suku kedua suatu barisan adalah 13. Aturannya: Multiply by 2 then subtract 3. Berapa suku pertamanya?</p>
+                            <div class="flex items-center gap-2 mt-2">
+                                <span>Suku Pertama =</span>
+                                <input type="text" data-id="ex91_11" placeholder="?" class="fill-blank-input w-24 py-1 rounded text-center">
+                            </div>
+                        </div>
+                    </div>
+
+                    <button onclick="toggleSolution('ex91-sol-all')" class="text-xs font-semibold bg-indigo-50 hover:bg-indigo-100 text-indigo-700 px-3 py-2 rounded-lg transition border border-indigo-200">
+                        🔍 Kunci Jawaban Lengkap Exercise 9.1 (Soal 1 - 11)
+                    </button>
+                    <div id="ex91-sol-all" class="solution-box p-4 bg-emerald-50 text-emerald-900 rounded-lg text-xs space-y-2 border border-emerald-200">
+                        <p><strong>1a)</strong> Add 4 $\rightarrow$ 23, 27 | <strong>1b)</strong> Subtract 5 $\rightarrow$ 20, 15</p>
+                        <p><strong>2)</strong> a) Add 2 (10, 12) | b) Subtract 3 (5, 2) | c) Add 4 (21, 25) | d) Subtract 2 (22, 20) | e) Add 5 (21, 26) | f) Subtract 3 (6, 3)</p>
+                        <p><strong>3)</strong> a) 1, 6, 11, 16 | b) 20, 16, 12, 8 | c) 6, 12, 24, 48 | d) 60, 30, 15, 7.5</p>
+                        <p><strong>4)</strong> a) 8, 14 | b) 23 | c) 20, 17 | d) 74, 42 | e) 16, 48 | f) 18, 8</p>
+                        <p><strong>5)</strong> a) Infinite | b) Finite | c) Finite | d) Infinite</p>
+                        <p><strong>6)</strong> a) 4, 9, 19 | b) 10, 24, 66 | c) 24, 16, 12</p>
+                        <p><strong>7)</strong> B-vi (Add 3), C-i (Subtract 2), D-ii (Divide by 2), E-iii (Multiply by 5 add 1), F-v (Divide by 2 add 4)</p>
+                        <p><strong>8)</strong> Sofia salah karena $4+4=8$ tapi $8+4=12 \neq 20$. Zara salah karena $4 \times 2=8$ tapi $8 \times 2=16 \neq 20$. Aturan yang benar: Multiply by 3 then subtract 4.</p>
+                        <p><strong>11)</strong> Suku Pertama = <strong>8</strong> (karena $8 \times 2 - 3 = 13$).</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. SUB-BAB 9.2: GENERATING SEQUENCES (2) - PATTERNS -->
+        <section id="section-9-2" class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200 space-y-8">
+            <div class="border-b pb-4">
+                <span class="bg-indigo-100 text-indigo-700 text-xs font-bold px-3 py-1 rounded-full uppercase">Sub-Bab 9.2</span>
+                <h2 class="text-3xl font-bold text-slate-900 mt-2">Generating Sequences (2) - Pola Gambar (Patterns)</h2>
+                <p class="text-slate-600 mt-1">PDF Halaman 8-11 • Visualisasi Pola Objek & Seluruh Soal Exercise 9.2</p>
+            </div>
+
+            <!-- TEORI LENGKAP & CONTOH VISUAL SUB-BAB 9.2 -->
+            <div class="bg-slate-50 border border-slate-200 rounded-xl p-5 space-y-4">
+                <h3 class="font-bold text-lg text-indigo-700">Penjelasan Materi Pola Gambar & Visualisasi:</h3>
+                <p class="text-sm text-slate-700">
+                    Pada sub-bab ini, barisan bilangan disajikan dalam bentuk urutan gambar pola bangun/objek. Kita dapat menentukan aturan suku-ke-suku dengan menghitung jumlah objek pada setiap pola dan mengamati penambahannya.
+                </p>
+
+                <!-- Visualisasi Dot Patterns (Halaman 8) -->
+                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-2">
+                    <h4 class="font-bold text-xs text-indigo-800 uppercase tracking-wide">Pola Contoh 1: Dot Patterns (PDF Halaman 8)</h4>
+                    <div class="grid grid-cols-3 gap-2 text-center py-2 bg-indigo-50/50 rounded-lg">
+                        <div>
+                            <span class="text-xs text-slate-500 block mb-1">Pattern 1</span>
+                            <div class="flex justify-center gap-1 my-1">
+                                <span class="w-3 h-3 bg-indigo-600 rounded-full inline-block"></span>
+                                <span class="w-3 h-3 bg-indigo-600 rounded-full inline-block"></span>
+                                <span class="w-3 h-3 bg-indigo-600 rounded-full inline-block"></span>
+                            </div>
+                            <span class="text-xs font-bold text-indigo-900">3 dots</span>
+                        </div>
+                        <div>
+                            <span class="text-xs text-slate-500 block mb-1">Pattern 2</span>
+                            <div class="flex justify-center gap-1 my-1">
+                                <span class="w-3 h-3 bg-indigo-600 rounded-full inline-block"></span>
+                                <span class="w-3 h-3 bg-indigo-600 rounded-full inline-block"></span>
+                                <span class="w-3 h-3 bg-indigo-600 rounded-full inline-block"></span>
+                                <span class="w-3 h-3 bg-indigo-600 rounded-full inline-block"></span>
+                                <span class="w-3 h-3 bg-indigo-600 rounded-full inline-block"></span>
+                            </div>
+                            <span class="text-xs font-bold text-indigo-900">5 dots</span>
+                        </div>
+                        <div>
+                            <span class="text-xs text-slate-500 block mb-1">Pattern 3</span>
+                            <div class="flex justify-center gap-1 my-1">
+                                <span class="w-3 h-3 bg-indigo-600 rounded-full inline-block"></span>
+                                <span class="w-3 h-3 bg-indigo-600 rounded-full inline-block"></span>
+                                <span class="w-3 h-3 bg-indigo-600 rounded-full inline-block"></span>
+                                <span class="w-3 h-3 bg-indigo-600 rounded-full inline-block"></span>
+                                <span class="w-3 h-3 bg-indigo-600 rounded-full inline-block"></span>
+                                <span class="w-3 h-3 bg-indigo-600 rounded-full inline-block"></span>
+                                <span class="w-3 h-3 bg-indigo-600 rounded-full inline-block"></span>
+                            </div>
+                            <span class="text-xs font-bold text-indigo-900">7 dots</span>
+                        </div>
+                    </div>
+                    <p class="text-xs text-slate-600">Barisan angka: <strong>3, 5, 7, ...</strong> | Aturan Suku-ke-Suku: <strong>Add 2</strong> (Ditambah 2 titik pada tiap pola baru).</p>
+                </div>
+
+                <!-- Visualisasi Matchsticks (Worked Example 9.2) -->
+                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm space-y-2">
+                    <h4 class="font-bold text-xs text-indigo-800 uppercase tracking-wide">Worked Example 9.2: Batang Korek Api / Matchsticks (PDF Halaman 8-9)</h4>
+                    <div class="grid grid-cols-3 gap-2 text-center py-3 bg-amber-50/50 rounded-lg font-mono">
+                        <div>
+                            <span class="text-xs text-slate-500 block mb-1">Pattern 1</span>
+                            <div class="text-amber-600 font-bold text-lg">△</div>
+                            <span class="text-xs font-bold text-amber-900">3 matchsticks</span>
+                        </div>
+                        <div>
+                            <span class="text-xs text-slate-500 block mb-1">Pattern 2</span>
+                            <div class="text-amber-600 font-bold text-lg">△△</div>
+                            <span class="text-xs font-bold text-amber-900">6 matchsticks</span>
+                        </div>
+                        <div>
+                            <span class="text-xs text-slate-500 block mb-1">Pattern 3</span>
+                            <div class="text-amber-600 font-bold text-lg">△△△</div>
+                            <span class="text-xs font-bold text-amber-900">9 matchsticks</span>
+                        </div>
+                    </div>
+                    <div class="text-xs space-y-1 text-slate-700">
+                        <p><strong>a) Pattern 4:</strong> Memiliki 4 segitiga = $12$ matchsticks.</p>
+                        <p><strong>b) Barisan Bilangan:</strong> $3, 6, 9, 12, \dots$</p>
+                        <p><strong>c) Term-to-term rule:</strong> <em>Add 3</em>.</p>
+                        <p><strong>d) Penjelasan:</strong> Setiap pola bertambah 1 segitiga baru di ujungnya, yang berarti bertambah 3 batang korek api.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EXERCISE 9.2 COMPLETE (SOAL 1 HINGGA 7) -->
+            <div class="space-y-6">
+                <h3 class="font-bold text-xl text-slate-900 border-b pb-2">Exercise 9.2 (Seluruh Soal Halaman 9-11)</h3>
+
+                <!-- Q1 Dots -->
+                <div class="border rounded-xl p-4 space-y-3">
+                    <span class="text-xs bg-indigo-100 text-indigo-700 font-bold px-2 py-0.5 rounded">Soal 1 (Dots Pattern - Halaman 9)</span>
+                    <p class="text-sm">Pola titik: Pattern 1 = 4 dots, Pattern 2 = 7 dots, Pattern 3 = 10 dots.</p>
+                    <div class="grid grid-cols-3 gap-2 bg-slate-50 p-3 rounded-lg text-center border">
+                        <div><span class="text-xs font-bold text-slate-700">Pattern 1: 4 dots</span></div>
+                        <div><span class="text-xs font-bold text-slate-700">Pattern 2: 7 dots</span></div>
+                        <div><span class="text-xs font-bold text-slate-700">Pattern 3: 10 dots</span></div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+                        <div>
+                            <label class="block font-medium mb-1">b) Barisan Bilangan:</label>
+                            <input type="text" data-id="ex92_1b" placeholder="4, 7, 10..." class="fill-blank-input w-full py-1 rounded">
+                        </div>
+                        <div>
+                            <label class="block font-medium mb-1">c) Term-to-term rule:</label>
+                            <input type="text" data-id="ex92_1c" placeholder="Add..." class="fill-blank-input w-full py-1 rounded">
+                        </div>
+                        <div>
+                            <label class="block font-medium mb-1">d) Cara pembentukan:</label>
+                            <input type="text" data-id="ex92_1d" placeholder="Penjelasan..." class="fill-blank-input w-full py-1 rounded">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Q2 Squares (Merujuk gambar_01d8ea.png & gambar_01d8e8.png) -->
+                <div class="border rounded-xl p-4 space-y-3">
+                    <span class="text-xs bg-indigo-100 text-indigo-700 font-bold px-2 py-0.5 rounded">Soal 2 (Pola Persegi / Squares - Halaman 9 & Gambar)</span>
+                    <p class="text-sm">Sequence of patterns made from squares (Pattern 1 = 5 squares, Pattern 2 = 8, Pattern 3 = 11):</p>
+                    
+                    <!-- Visualisasi Pola Persegi Pink -->
+                    <div class="grid grid-cols-3 gap-3 bg-pink-50 p-4 rounded-xl border border-pink-200 text-center">
+                        <div>
+                            <span class="text-xs font-semibold text-pink-900 block mb-2">Pattern 1</span>
+                            <div class="inline-grid grid-cols-3 gap-0.5 bg-pink-500 p-1 rounded">
+                                <div class="w-3 h-3 bg-white"></div><div class="w-3 h-3 bg-pink-500"></div><div class="w-3 h-3 bg-white"></div>
+                                <div class="w-3 h-3 bg-white"></div><div class="w-3 h-3 bg-white"></div><div class="w-3 h-3 bg-white"></div>
+                            </div>
+                            <span class="text-xs font-bold text-pink-700 block mt-1">5 squares</span>
+                        </div>
+                        <div>
+                            <span class="text-xs font-semibold text-pink-900 block mb-2">Pattern 2</span>
+                            <div class="inline-grid grid-cols-4 gap-0.5 bg-pink-500 p-1 rounded">
+                                <div class="w-3 h-3 bg-white"></div><div class="w-3 h-3 bg-white"></div><div class="w-3 h-3 bg-white"></div><div class="w-3 h-3 bg-white"></div>
+                                <div class="w-3 h-3 bg-white"></div><div class="w-3 h-3 bg-white"></div><div class="w-3 h-3 bg-white"></div><div class="w-3 h-3 bg-white"></div>
+                            </div>
+                            <span class="text-xs font-bold text-pink-700 block mt-1">8 squares</span>
+                        </div>
+                        <div>
+                            <span class="text-xs font-semibold text-pink-900 block mb-2">Pattern 3</span>
+                            <div class="inline-grid grid-cols-5 gap-0.5 bg-pink-500 p-1 rounded">
+                                <div class="w-3 h-3 bg-white"></div><div class="w-3 h-3 bg-white"></div><div class="w-3 h-3 bg-white"></div><div class="w-3 h-3 bg-white"></div><div class="w-3 h-3 bg-white"></div>
+                                <div class="w-3 h-3 bg-white"></div><div class="w-3 h-3 bg-white"></div><div class="w-3 h-3 bg-white"></div><div class="w-3 h-3 bg-white"></div><div class="w-3 h-3 bg-white"></div>
+                            </div>
+                            <span class="text-xs font-bold text-pink-700 block mt-1">11 squares</span>
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto mt-2">
+                        <table class="w-full text-xs border-collapse border border-slate-300 text-center bg-white">
+                            <thead class="bg-slate-100">
+                                <tr>
+                                    <th class="border p-2">Pattern number</th>
+                                    <th class="border p-2">1</th>
+                                    <th class="border p-2">2</th>
+                                    <th class="border p-2">3</th>
+                                    <th class="border p-2">4</th>
+                                    <th class="border p-2">5</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="border p-2 font-semibold">Number of squares</td>
+                                    <td class="border p-2">5</td>
+                                    <td class="border p-2">8</td>
+                                    <td class="border p-2">11</td>
+                                    <td class="border p-2"><input type="text" data-id="ex92_2_p4" placeholder="?" class="fill-blank-input w-12 py-0.5 rounded text-center"></td>
+                                    <td class="border p-2"><input type="text" data-id="ex92_2_p5" placeholder="?" class="fill-blank-input w-12 py-0.5 rounded text-center"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs mt-2">
+                        <div>
+                            <label class="block font-medium">c) Aturan suku-ke-suku (Term-to-term rule):</label>
+                            <input type="text" data-id="ex92_2c" placeholder="Tulis aturan..." class="fill-blank-input w-full py-1 rounded">
+                        </div>
+                        <div>
+                            <label class="block font-medium">d) Banyak persegi di: i) Pattern 6, ii) Pattern 8?</label>
+                            <input type="text" data-id="ex92_2d" placeholder="Banyak persegi..." class="fill-blank-input w-full py-1 rounded">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Q3 & Q4 Sofia Method Critique -->
+                <div class="border rounded-xl p-4 space-y-3">
+                    <span class="text-xs bg-indigo-100 text-indigo-700 font-bold px-2 py-0.5 rounded">Soal 3 & 4 (Kritik Metode Tabel Sofia - Halaman 10)</span>
+                    <p class="text-sm">Sofia membuat tabel nilai untuk mencari suku ke-10 (Pattern 10 = 21 dots). Kritik metode ini!</p>
+                    <div class="space-y-2 text-xs">
+                        <textarea data-id="ex92_3" placeholder="a) Jelaskan metode Sofia. b) Kelebihan & Kekurangan metode tabel. c) Metode yang lebih cepat..." class="fill-blank-input w-full p-2 h-20 rounded text-left"></textarea>
+                    </div>
+                </div>
+
+                <!-- Q5 Triangles (Merujuk gambar_01d8e8.png) -->
+                <div class="border rounded-xl p-4 space-y-3">
+                    <span class="text-xs bg-indigo-100 text-indigo-700 font-bold px-2 py-0.5 rounded">Soal 5 (Pola Segitiga / Triangles - Halaman 10 & Gambar)</span>
+                    <p class="text-sm">Pattern 1 = 4 triangles, Pattern 2 = 8 triangles, Pattern 3 = 12 triangles:</p>
+
+                    <!-- Visualisasi Pola Segitiga Merah -->
+                    <div class="grid grid-cols-3 gap-3 bg-red-50 p-4 rounded-xl border border-red-200 text-center">
+                        <div>
+                            <span class="text-xs font-semibold text-red-900 block mb-1">Pattern 1</span>
+                            <div class="text-red-600 font-bold text-lg">♦</div>
+                            <span class="text-xs font-bold text-red-700">4 triangles</span>
+                        </div>
+                        <div>
+                            <span class="text-xs font-semibold text-red-900 block mb-1">Pattern 2</span>
+                            <div class="text-red-600 font-bold text-lg">♦♦</div>
+                            <span class="text-xs font-bold text-red-700">8 triangles</span>
+                        </div>
+                        <div>
+                            <span class="text-xs font-semibold text-red-900 block mb-1">Pattern 3</span>
+                            <div class="text-red-600 font-bold text-lg">♦♦♦</div>
+                            <span class="text-xs font-bold text-red-700">12 triangles</span>
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto mt-2">
+                        <table class="w-full text-xs border-collapse border border-slate-300 text-center bg-white">
+                            <thead class="bg-slate-100">
+                                <tr>
+                                    <th class="border p-2">Pattern number</th>
+                                    <th class="border p-2">1</th>
+                                    <th class="border p-2">2</th>
+                                    <th class="border p-2">3</th>
+                                    <th class="border p-2">4</th>
+                                    <th class="border p-2">5</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="border p-2 font-semibold">Number of triangles</td>
+                                    <td class="border p-2">4</td>
+                                    <td class="border p-2">8</td>
+                                    <td class="border p-2">12</td>
+                                    <td class="border p-2"><input type="text" data-id="ex92_5_p4" placeholder="?" class="fill-blank-input w-12 py-0.5 rounded text-center"></td>
+                                    <td class="border p-2"><input type="text" data-id="ex92_5_p5" placeholder="?" class="fill-blank-input w-12 py-0.5 rounded text-center"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="space-y-2 text-xs mt-2">
+                        <p class="font-medium">b) Yusef menduga ada pola yang memiliki 42 segitiga. Apakah ia benar? Jelaskan!</p>
+                        <input type="text" data-id="ex92_5b" placeholder="Tulis jawaban dan alasan di sini..." class="fill-blank-input w-full py-1 rounded">
+                        <p class="font-medium">c) Frances berpikir salah satu pola memiliki 93 segitiga. Tanpa menghitung, jelaskan mengapa ia salah!</p>
+                        <input type="text" data-id="ex92_5c" placeholder="Alasan Frances..." class="fill-blank-input w-full py-1 rounded">
+                    </div>
+                </div>
+
+                <!-- Q6 & Q7 -->
+                <div class="border rounded-xl p-4 space-y-3">
+                    <span class="text-xs bg-indigo-100 text-indigo-700 font-bold px-2 py-0.5 rounded">Soal 6 & 7 (Jacob, Sofia & Marcus Problem - Halaman 11)</span>
+                    <div class="space-y-3 text-xs">
+                        <div class="bg-slate-50 p-3 rounded border">
+                            <p class="font-semibold">6) Jacob: Pattern 2 = 5 dots, Pattern 4 = 9 dots.</p>
+                            <p class="text-slate-600">b) Berapa banyak titik pada Pattern 7?</p>
+                            <input type="text" data-id="ex92_6b" placeholder="Banyak titik Pattern 7..." class="fill-blank-input w-full mt-1 py-1 rounded">
+                        </div>
+
+                        <div class="bg-slate-50 p-3 rounded border">
+                            <p class="font-semibold">7) Sofia & Marcus melihat pola persegi: 5, 7, 9, 11, ...</p>
+                            <p class="text-slate-600">Marcus: Pattern 20 = $20 \times 2 + 3 = \mathbf{43}$ squares. Sofia: Pattern 20 = $20 + 2 = \mathbf{22}$ squares. Siapa yang benar?</p>
+                            <textarea data-id="ex92_7" placeholder="Siapa yang benar dan jelaskan alasannya..." class="fill-blank-input w-full p-2 mt-1 h-16 rounded text-left"></textarea>
+                        </div>
+                    </div>
+
+                    <button onclick="toggleSolution('ex92-sol-all')" class="text-xs font-semibold bg-indigo-50 hover:bg-indigo-100 text-indigo-700 px-3 py-2 rounded-lg transition border border-indigo-200">
+                        🔍 Kunci Jawaban Lengkap Exercise 9.2 (Soal 1 - 7)
+                    </button>
+                    <div id="ex92-sol-all" class="solution-box p-4 bg-emerald-50 text-emerald-900 rounded-lg text-xs space-y-2 border border-emerald-200">
+                        <p><strong>1)</strong> b) 4, 7, 10, 13, 16 | c) Add 3 | d) Ditambahkan 3 titik pada setiap pola baru.</p>
+                        <p><strong>2)</strong> Table: P4=14, P5=17 | c) Add 3 | d) i) Pattern 6 = 20, ii) Pattern 8 = 26.</p>
+                        <p><strong>3 & 4)</strong> Kelebihan: Mudah dibuat. Kekurangan: Sangat lambat untuk mencari suku ke-100. Metode lebih baik: Menggunakan rumus suku ke-$n$ ($2n + 1$).</p>
+                        <p><strong>5)</strong> Table: P4=16, P5=20 | b) Salah, karena 42 bukan kelipatan 4. | c) Salah, 93 ganjil padahal jumlah segitiga selalu genap kelipatan 4.</p>
+                        <p><strong>6)</strong> Pattern 7 = <strong>15 dots</strong> (Barisan: 3, 5, 7, 9, 11, 13, 15).</p>
+                        <p><strong>7)</strong> <strong>Marcus benar!</strong> Karena aturan suku ke-$n$ dari 5, 7, 9, 11 adalah $2n + 3$. Sofia salah karena ia hanya menambahkan 2 ke nomor pola (20+2) bukan menerapkan perbedaan barisan.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. SUB-BAB 9.3: USING THE nth TERM -->
+        <section id="section-9-3" class="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200 space-y-8">
+            <div class="border-b pb-4">
+                <span class="bg-indigo-100 text-indigo-700 text-xs font-bold px-3 py-1 rounded-full uppercase">Sub-Bab 9.3</span>
+                <h2 class="text-3xl font-bold text-slate-900 mt-2">Using the $n^{\text{th}}$ Term (Aturan Suku Ke-$n$)</h2>
+                <p class="text-slate-600 mt-1">PDF Halaman 12-16 • Formulasi Aljabar & Seluruh Soal Exercise 9.3</p>
+            </div>
+
+            <!-- TEORI LENGKAP 9.3 -->
+            <div class="bg-slate-50 border border-slate-200 rounded-xl p-5 space-y-4 text-xs">
+                <h3 class="font-bold text-sm text-indigo-700">Konsep Rumus $n^{\text{th}}$ Term & Worked Example 9.3 (Halaman 12-13):</h3>
+                <p class="text-slate-700">
+                    <strong>Position number ($n$):</strong> Nomor posisi suku dalam barisan ($n=1$ untuk suku pertama, $n=2$ untuk suku kedua, dst).
+                </p>
+                
+                <div class="bg-white p-3 rounded-lg border space-y-2">
+                    <p class="font-bold text-indigo-900">• Barisan Kelipatan 3 ($3, 6, 9, 12, 15, \dots$):</p>
+                    <p>Hubungan: $\text{Term} = 3 \times \text{Position number} \rightarrow \mathbf{n^{\text{th}}\text{ term} = 3n}$.</p>
+                    <p class="font-bold text-indigo-900">• Barisan Penjumlahan ($3, 4, 5, 6, 7, \dots$):</p>
+                    <p>Hubungan: $\text{Term} = \text{Position number} + 2 \rightarrow \mathbf{n^{\text{th}}\text{ term} = n + 2}$.</p>
+                </div>
+
+                <div class="bg-indigo-50 p-3 rounded-lg border border-indigo-200 space-y-1">
+                    <h4 class="font-bold text-indigo-900">Worked Example 9.3:</h4>
+                    <p><strong>a) i) Barisan: $12, 24, 36, 48, 60, \dots$</strong> $\rightarrow$ Kelipatan 12, maka $n^{\text{th}}\text{ term} = \mathbf{12n}$.</p>
+                    <p><strong>ii) Barisan: $3, 4, 5, 6, 7, \dots$</strong> $\rightarrow$ Setiap suku bernilai $n+2$, maka $n^{\text{th}}\text{ term} = \mathbf{n + 2}$.</p>
+                    <p><strong>b) Suku Ke-20 ($n=20$):</strong> i) $12 \times 20 = \mathbf{240}$, ii) $20 + 2 = \mathbf{22}$.</p>
+                </div>
+            </div>
+
+            <!-- EXERCISE 9.3 COMPLETE (SOAL 1 HINGGA 12) -->
+            <div class="space-y-6">
+                <h3 class="font-bold text-xl text-slate-900 border-b pb-2">Exercise 9.3 (Seluruh Soal Halaman 13-16)</h3>
+
+                <!-- Q1 - Q3 Multiples -->
+                <div class="border rounded-xl p-4 space-y-3">
+                    <span class="text-xs bg-indigo-100 text-indigo-700 font-bold px-2 py-0.5 rounded">Soal 1 - 3 (Aturan Kelipatan / $kn$)</span>
+                    <div class="space-y-3 text-xs">
+                        <div class="bg-slate-50 p-3 rounded border">
+                            <p class="font-semibold">1) Barisan: 6, 12, 18, 24, 30, ...</p>
+                            <div class="flex items-center gap-2 mt-1">
+                                <span>$n^{\text{th}}$ term rule =</span>
+                                <input type="text" data-id="ex93_1_rule" placeholder="Contoh: 6n" class="fill-blank-input w-28 py-0.5 rounded text-center">
+                                <span>| 15th term =</span>
+                                <input type="text" data-id="ex93_1_t15" placeholder="Suku 15" class="fill-blank-input w-24 py-0.5 rounded text-center">
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-50 p-3 rounded border">
+                            <p class="font-semibold mb-1">2) Tentukan $n^{\text{th}}$ term rule untuk barisan berikut:</p>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                                <div>a) 4, 8, 12, 16, ... $\rightarrow$ <input type="text" data-id="ex93_2a" placeholder="Rule..." class="fill-blank-input w-20 py-0.5 rounded"></div>
+                                <div>b) 8, 16, 24, 32, ... $\rightarrow$ <input type="text" data-id="ex93_2b" placeholder="Rule..." class="fill-blank-input w-20 py-0.5 rounded"></div>
+                                <div>c) 15, 30, 45, 60, ... $\rightarrow$ <input type="text" data-id="ex93_2c" placeholder="Rule..." class="fill-blank-input w-20 py-0.5 rounded"></div>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-50 p-3 rounded border">
+                            <p class="font-semibold mb-1">3) Untuk tiap barisan di Soal 2, hitunglah: (i) 8th term, (ii) 20th term!</p>
+                            <input type="text" data-id="ex93_3" placeholder="Isi hasil perhitungan 8th & 20th term..." class="fill-blank-input w-full py-1 rounded">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Q4 - Q6 Addition Rules -->
+                <div class="border rounded-xl p-4 space-y-3">
+                    <span class="text-xs bg-indigo-100 text-indigo-700 font-bold px-2 py-0.5 rounded">Soal 4 - 6 (Aturan Penjumlahan / $n + c$)</span>
+                    <div class="space-y-3 text-xs">
+                        <div class="bg-slate-50 p-3 rounded border">
+                            <p class="font-semibold">4) Barisan: 6, 7, 8, 9, 10, ...</p>
+                            <p class="mt-1">$n^{\text{th}}$ term rule = <input type="text" data-id="ex93_4_rule" placeholder="n + ..." class="fill-blank-input w-24 py-0.5 rounded text-center"> | 20th term = <input type="text" data-id="ex93_4_t20" placeholder="?" class="fill-blank-input w-16 py-0.5 rounded text-center"> | 35th term = <input type="text" data-id="ex93_4_t35" placeholder="?" class="fill-blank-input w-16 py-0.5 rounded text-center"></p>
+                        </div>
+
+                        <div class="bg-slate-50 p-3 rounded border">
+                            <p class="font-semibold mb-1">5) Tentukan $n^{\text{th}}$ term rule untuk:</p>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                                <div>a) 10, 11, 12, ... $\rightarrow$ <input type="text" data-id="ex93_5a" placeholder="Rule" class="fill-blank-input w-20 py-0.5 rounded"></div>
+                                <div>b) 5, 6, 7, ... $\rightarrow$ <input type="text" data-id="ex93_5b" placeholder="Rule" class="fill-blank-input w-20 py-0.5 rounded"></div>
+                                <div>c) 22, 23, 24, ... $\rightarrow$ <input type="text" data-id="ex93_5c" placeholder="Rule" class="fill-blank-input w-20 py-0.5 rounded"></div>
+                                <div>d) 43, 44, 45, ... $\rightarrow$ <input type="text" data-id="ex93_5d" placeholder="Rule" class="fill-blank-input w-20 py-0.5 rounded"></div>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-50 p-3 rounded border">
+                            <p class="font-semibold mb-1">6) Hitung 8th term & 20th term untuk soal nomor 5!</p>
+                            <input type="text" data-id="ex93_6" placeholder="Hasil 8th & 20th term..." class="fill-blank-input w-full py-1 rounded">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Q7 - Q10 Negative & Matching -->
+                <div class="border rounded-xl p-4 space-y-3">
+                    <span class="text-xs bg-indigo-100 text-indigo-700 font-bold px-2 py-0.5 rounded">Soal 7 - 10 (Bilangan Negatif & Jodohkan Rule)</span>
+                    <div class="space-y-3 text-xs">
+                        <div class="bg-slate-50 p-3 rounded border">
+                            <p class="font-semibold">7) Zara melihat barisan: -5, -4, -3, -2, ... Ia berkata $n^{\text{th}}$ term = $n - 6$. Benarkah Zara?</p>
+                            <input type="text" data-id="ex93_7" placeholder="Ya/Tidak & Alasan..." class="fill-blank-input w-full mt-1 py-1 rounded">
+                        </div>
+
+                        <div class="bg-slate-50 p-3 rounded border">
+                            <p class="font-semibold">9) Hitung 5 suku pertama untuk aturan berikut:</p>
+                            <p>a) $n - 4 \rightarrow$ <input type="text" data-id="ex93_9a" placeholder="5 suku pertama..." class="fill-blank-input w-64 py-0.5 rounded"></p>
+                            <p class="mt-1">b) $n + 8 \rightarrow$ <input type="text" data-id="ex93_9b" placeholder="5 suku pertama..." class="fill-blank-input w-64 py-0.5 rounded"></p>
+                            <p class="mt-1">c) $10n \rightarrow$ <input type="text" data-id="ex93_9c" placeholder="5 suku pertama..." class="fill-blank-input w-64 py-0.5 rounded"></p>
+                        </div>
+
+                        <div class="bg-slate-50 p-3 rounded border">
+                            <p class="font-semibold mb-1">10) Match Sequence (A-F) with Rule (i-vi):</p>
+                            <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
+                                <div>A) 0, 1, 2, 3... $\rightarrow$ <strong>iii ($n-1$)</strong></div>
+                                <div>B) 2, 4, 6, 8... $\rightarrow$ <input type="text" data-id="ex93_10b" placeholder="i-vi?" class="fill-blank-input w-16 py-0.5 rounded"></div>
+                                <div>C) 4, 5, 6, 7... $\rightarrow$ <input type="text" data-id="ex93_10c" placeholder="i-vi?" class="fill-blank-input w-16 py-0.5 rounded"></div>
+                                <div>D) 7, 14, 21... $\rightarrow$ <input type="text" data-id="ex93_10d" placeholder="i-vi?" class="fill-blank-input w-16 py-0.5 rounded"></div>
+                                <div>E) -2, -1, 0, 1... $\rightarrow$ <input type="text" data-id="ex93_10e" placeholder="i-vi?" class="fill-blank-input w-16 py-0.5 rounded"></div>
+                                <div>F) 8, 9, 10, 11... $\rightarrow$ <input type="text" data-id="ex93_10f" placeholder="i-vi?" class="fill-blank-input w-16 py-0.5 rounded"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Q11 Table -->
+                <div class="border rounded-xl p-4 space-y-3">
+                    <span class="text-xs bg-indigo-100 text-indigo-700 font-bold px-2 py-0.5 rounded">Soal 11 (Tabel Isian Nilai Suku - Halaman 15)</span>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-xs border-collapse border border-slate-300 text-center bg-white">
+                            <thead class="bg-slate-200">
+                                <tr>
+                                    <th class="border p-2">Aturan $n^{\text{th}}$ Term</th>
+                                    <th class="border p-2">Suku Ke-5 ($n=5$)</th>
+                                    <th class="border p-2">Suku Ke-10 ($n=10$)</th>
+                                    <th class="border p-2">Suku Ke-20 ($n=20$)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="border p-2 font-mono font-semibold">$n + 12$</td>
+                                    <td class="border p-2 font-bold text-slate-700">17</td>
+                                    <td class="border p-2"><input type="text" data-id="tbl_10_1" placeholder="?" class="fill-blank-input w-16 py-0.5 rounded text-center"></td>
+                                    <td class="border p-2"><input type="text" data-id="tbl_20_1" placeholder="?" class="fill-blank-input w-16 py-0.5 rounded text-center"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border p-2 font-mono font-semibold">$n - 5$</td>
+                                    <td class="border p-2"><input type="text" data-id="tbl_5_2" placeholder="?" class="fill-blank-input w-16 py-0.5 rounded text-center"></td>
+                                    <td class="border p-2 font-bold text-slate-700">5</td>
+                                    <td class="border p-2"><input type="text" data-id="tbl_20_2" placeholder="?" class="fill-blank-input w-16 py-0.5 rounded text-center"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border p-2 font-mono font-semibold">$4n$</td>
+                                    <td class="border p-2"><input type="text" data-id="tbl_5_3" placeholder="?" class="fill-blank-input w-16 py-0.5 rounded text-center"></td>
+                                    <td class="border p-2"><input type="text" data-id="tbl_10_3" placeholder="?" class="fill-blank-input w-16 py-0.5 rounded text-center"></td>
+                                    <td class="border p-2 font-bold text-slate-700">80</td>
+                                </tr>
+                                <tr>
+                                    <td class="border p-2 font-mono font-semibold">$n + 35$</td>
+                                    <td class="border p-2"><input type="text" data-id="tbl_5_4" placeholder="?" class="fill-blank-input w-16 py-0.5 rounded text-center"></td>
+                                    <td class="border p-2 font-bold text-slate-700">45</td>
+                                    <td class="border p-2"><input type="text" data-id="tbl_20_4" placeholder="?" class="fill-blank-input w-16 py-0.5 rounded text-center"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border p-2 font-mono font-semibold">$n - 15$</td>
+                                    <td class="border p-2 font-bold text-slate-700">-10</td>
+                                    <td class="border p-2"><input type="text" data-id="tbl_10_5" placeholder="?" class="fill-blank-input w-16 py-0.5 rounded text-center"></td>
+                                    <td class="border p-2"><input type="text" data-id="tbl_20_5" placeholder="?" class="fill-blank-input w-16 py-0.5 rounded text-center"></td>
+                                </tr>
+                                <tr>
+                                    <td class="border p-2 font-mono font-semibold">$16n$</td>
+                                    <td class="border p-2"><input type="text" data-id="tbl_5_6" placeholder="?" class="fill-blank-input w-16 py-0.5 rounded text-center"></td>
+                                    <td class="border p-2"><input type="text" data-id="tbl_10_6" placeholder="?" class="fill-blank-input w-16 py-0.5 rounded text-center"></td>
+                                    <td class="border p-2"><input type="text" data-id="tbl_20_6" placeholder="?" class="fill-blank-input w-16 py-0.5 rounded text-center"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Q12 Cards Problem -->
+                <div class="border rounded-xl p-4 space-y-3">
+                    <span class="text-xs bg-indigo-100 text-indigo-700 font-bold px-2 py-0.5 rounded">Soal 12 (Number Cards Problem - Halaman 16)</span>
+                    <p class="text-sm">Kartu Angka: <span class="font-bold border px-2 py-0.5 rounded bg-amber-50 text-amber-900">[20, 22, 36, 40, 63, 100]</span></p>
+                    <p class="text-xs text-slate-600">Kartu Aturan: A ($9n$), B ($n+6$), C ($n+20$), D ($20n$)</p>
+                    <div class="space-y-2 text-xs">
+                        <div>
+                            <label class="block font-medium">a) Manakah satu-satunya barisan yang dapat memuat KE-ENAM angka tersebut?</label>
+                            <input type="text" data-id="ex93_12a" placeholder="Urutan A, B, C, atau D?" class="fill-blank-input w-full py-1 rounded">
+                        </div>
+                        <div>
+                            <label class="block font-medium">b) Angka mana saja yang bisa digunakan di 3 barisan berbeda?</label>
+                            <input type="text" data-id="ex93_12b" placeholder="Tunjukkan angkanya..." class="fill-blank-input w-full py-1 rounded">
+                        </div>
+                    </div>
+
+                    <button onclick="toggleSolution('ex93-sol-all')" class="text-xs font-semibold bg-indigo-50 hover:bg-indigo-100 text-indigo-700 px-3 py-2 rounded-lg transition border border-indigo-200">
+                        🔍 Kunci Jawaban Lengkap Exercise 9.3 (Soal 1 - 12)
+                    </button>
+                    <div id="ex93-sol-all" class="solution-box p-4 bg-emerald-50 text-emerald-900 rounded-lg text-xs space-y-2 border border-emerald-200">
+                        <p><strong>1)</strong> $6n$ | 15th term = 90</p>
+                        <p><strong>2)</strong> a) $4n$, b) $8n$, c) $15n$</p>
+                        <p><strong>3)</strong> 8th: a=32, b=64, c=120 | 20th: a=80, b=160, c=300</p>
+                        <p><strong>4)</strong> $n + 5$ | 20th = 25, 35th = 40</p>
+                        <p><strong>5)</strong> a) $n+9$, b) $n+4$, c) $n+21$, d) $n+42$</p>
+                        <p><strong>7)</strong> <strong>Zara BENAR!</strong> Karena saat $n=1 \rightarrow 1-6=-5$; $n=2 \rightarrow 2-6=-4$, dst.</p>
+                        <p><strong>9)</strong> a) -3, -2, -1, 0, 1 | b) 9, 10, 11, 12, 13 | c) 10, 20, 30, 40, 50</p>
+                        <p><strong>10)</strong> B-v ($2n$), C-i ($n+3$), D-vi ($7n$), E-ii ($n-3$), F-iv ($n+7$)</p>
+                        <p><strong>11)</strong> Table values: Row 1 (22, 32) | Row 2 (0, 15) | Row 3 (20, 40) | Row 4 (40, 55) | Row 5 (-5, 5) | Row 6 (80, 160, 320)</p>
+                        <p><strong>12)</strong> a) <strong>Barisan B ($n+6$)</strong> karena semua kartu nilainya $>6$ sehingga nilai $n$ selalu bulat positif ($n = 14, 16, 30, 34, 57, 94$).</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SUMMARY CHECKLIST & RESET ACTION -->
+        <section class="bg-indigo-900 text-white rounded-2xl p-6 md:p-8 shadow-md flex flex-wrap justify-between items-center gap-4">
+            <div>
+                <h2 class="text-2xl font-bold mb-2 flex items-center gap-2">
+                    <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    Penyimpanan Terpasang (Auto-Save Active)
+                </h2>
+                <p class="text-xs text-indigo-200">Semua isian kamu tersimpan otomatis secara lokal di browser ini.</p>
+            </div>
+            <button onclick="resetAnswers()" class="text-xs bg-red-600 hover:bg-red-700 text-white font-semibold px-4 py-2 rounded-lg transition shadow">
+                🗑️ Bersihkan Semua Isian
+            </button>
+        </section>
+
+    </main>
+
+    <!-- JavaScript LocalStorage persistence and Toggle logic -->
+    <script>
+        // Toggle Solution Box
+        function toggleSolution(id) {
+            const box = document.getElementById(id);
+            if (box.style.display === "block") {
+                box.style.display = "none";
+            } else {
+                box.style.display = "block";
+            }
+        }
+
+        // Auto Save to LocalStorage
+        const inputs = document.querySelectorAll('input[data-id], textarea[data-id]');
+        const toast = document.getElementById('saveToast');
+
+        function showSaveToast() {
+            toast.classList.remove('hidden');
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 1500);
+        }
+
+        // Save input value on change/input
+        inputs.forEach(input => {
+            const key = 'cambridge_math_7_' + input.getAttribute('data-id');
+            const savedValue = localStorage.getItem(key);
+            if (savedValue !== null) {
+                input.value = savedValue;
+            }
+
+            input.addEventListener('input', (e) => {
+                localStorage.setItem(key, e.target.value);
+                showSaveToast();
+            });
+        });
+
+        // Reset answers
+        function resetAnswers() {
+            if (confirm("Apakah kamu yakin ingin mengosongkan semua jawaban yang telah diketik?")) {
+                inputs.forEach(input => {
+                    const key = 'cambridge_math_7_' + input.getAttribute('data-id');
+                    localStorage.removeItem(key);
+                    input.value = '';
+                });
+                alert("Semua jawaban berhasil dibersihkan!");
+            }
+        }
+    </script>
+</body>
+</html>
